@@ -1,0 +1,202 @@
+openapi: '3.0.2'
+info:
+  title: Mongodb microservice demo
+  version: '1.0'
+servers:
+  - url: http://localhost:8000
+  
+
+# Paths -----------------------------------------------------------------------
+
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      description: 'Add a new user'
+      operationId: postUser
+      responses:
+        '201':
+          description: 'user created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: user to add
+        required: true
+    get:
+      tags:
+        - user
+      description: 'get all users'
+      operationId: getUsers
+      responses:
+        '201':
+          description: 'get users'
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                 $ref: '#/components/schemas/User'
+        '400':
+          description: object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /user/{email}:
+    get:
+      tags:
+        - user
+      description: 'get user'
+      operationId: getUser
+      parameters:
+        - name: email
+          in: path
+          description: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: 'return user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    put:
+      tags:
+        - user
+      description: 'updateUser'
+      operationId: updateUser
+      parameters:
+        - name: email
+          in: path
+          description: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: 'update user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      requestBody:
+       content:
+         application/json:
+           schema:
+             $ref: '#/components/schemas/User'
+       description: user to update
+       required: true
+        
+    delete:
+      tags:
+        - user
+      description: 'delete user'
+      operationId: deleteUser
+      parameters:
+        - name: email
+          in: path
+          description: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: 'deleted user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+                
+# TODO: define paths and components for appointments, notifications, and documents
+
+# Components ------------------------------------------------------------------
+
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      description: response message including http status code
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+                 
+    User:
+      type: object
+      description: response message including http status code
+      properties:
+          name:
+            type: string
+          phoneNumber:
+            type: string
+          email:
+            type: string
